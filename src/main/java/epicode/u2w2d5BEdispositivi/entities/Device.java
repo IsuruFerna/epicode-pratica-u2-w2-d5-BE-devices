@@ -16,7 +16,8 @@ public class Device {
     private Long id;
     // types can be various like(mobile, laptop,...) can not be definitive
     private String type;
-    private Availability availability;
+    // 0: Available, 1: In Maintain, 2: In use, 3: Removed
+    private int availability;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
