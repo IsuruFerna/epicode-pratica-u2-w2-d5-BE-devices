@@ -11,7 +11,11 @@ import java.util.List;
 public interface DeviceDAO extends JpaRepository<Device, Long> {
     List<Device> findByUser(User user);
 
-    Page<Device> findByUserToPage(User user, Pageable pageable);
+    List<Device> findByType(String type);
 
-    Page<Device> findAllToPage(Pageable pageable);
+    List<Device> findByAvailability(Integer availability);
+
+//    Page<Device> findByUserToPage(User user, Pageable pageable);
+//
+//    Page<Device> findAllToPage(Pageable pageable);
 }

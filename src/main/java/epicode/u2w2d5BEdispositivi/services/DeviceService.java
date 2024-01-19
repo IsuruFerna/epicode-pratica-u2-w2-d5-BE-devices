@@ -2,6 +2,7 @@ package epicode.u2w2d5BEdispositivi.services;
 
 import epicode.u2w2d5BEdispositivi.entities.Device;
 import epicode.u2w2d5BEdispositivi.entities.User;
+import epicode.u2w2d5BEdispositivi.exceptions.BadRequestException;
 import epicode.u2w2d5BEdispositivi.exceptions.NotFoundException;
 import epicode.u2w2d5BEdispositivi.payload.NewDeviceDTO;
 import epicode.u2w2d5BEdispositivi.payload.NewDeviceResponse;
@@ -27,9 +28,9 @@ public class DeviceService {
         return deviceDAO.findAll();
     }
 
-    public Page<Device> getDevicesToPage(PageRequest pageRequest) {
-        return deviceDAO.findAllToPage(pageRequest);
-    }
+//    public Page<Device> getDevicesToPage(PageRequest pageRequest) {
+//        return deviceDAO.findAllToPage(pageRequest);
+//    }
 
     public Device save(NewDeviceDTO body) {
         Device device = new Device();
@@ -74,8 +75,19 @@ public class DeviceService {
         return deviceDAO.findByUser(user);
     }
 
-    public Page<Device> findByUserToPage(Long userId, Pageable pageable) {
-        User user = userService.findById(userId);
-        return deviceDAO.findByUserToPage(user, pageable);
+    public List<Device> findByType(String type) {
+        return deviceDAO.findByType(type);
     }
+
+    public List<Device> findByAvailability(Integer availability) {
+        if(3 <= availability && availability <= 0) {
+            throw new BadRequestException(availability + " must be a value between 0 and 3");
+        }
+        return deviceDAO.findByAvailability(availability);
+    }
+
+//    public Page<Device> findByUserToPage(Long userId, Pageable pageable) {
+//        User user = userService.findById(userId);
+//        return deviceDAO.findByUserToPage(user, pageable);
+//    }
 }

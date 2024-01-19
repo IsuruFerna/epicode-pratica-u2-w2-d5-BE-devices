@@ -24,13 +24,28 @@ public class DeviceController {
     private DeviceService deviceService;
 
 //    get: /devices
+// get: /device?userId=2
+
+// get: /devices?availability=1
+    // availability is an in between 0 and 3
+    // 0: Available, 1: In Maintain, 2: In use, 3: Removed
+
+// get: /devices?deviceType=computer
+    // types can be various like(mobile, laptop,...) can not be definitive
     @GetMapping("")
-    public Page<Device> getDevices(@RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id") String sortBy,
-            @RequestParam(required = false) Long userId) {
-        if(userId != null) return deviceService.findByUserToPage(userId, PageRequest.of(page, size, Sort.by(sortBy)));
-        else return deviceService.getDevicesToPage(PageRequest.of(page, size, Sort.by(sortBy)));
+    public List<Device> getDevices(
+            @RequestParam(required = false) String deviceType,
+            @RequestParam(required = false) Long userId,
+            @RequestParam(required = false) Integer availability) {
+        if(userId != null && deviceType == null && availability == null) {
+            return deviceService.findByUser(userId);
+        } else if (userId == null && deviceType != null && availability == null) {
+            return deviceService.findByType(deviceType);
+        } else if (userId == null && deviceType == null && availability != null) {
+            return deviceService.findByAvailability(availability);
+        } else {
+            return deviceService.getDevices();
+        }
     }
 
 //    post: /devices
