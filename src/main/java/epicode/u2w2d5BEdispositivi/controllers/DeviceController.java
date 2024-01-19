@@ -1,12 +1,15 @@
 package epicode.u2w2d5BEdispositivi.controllers;
 
 import epicode.u2w2d5BEdispositivi.entities.Device;
+import epicode.u2w2d5BEdispositivi.exceptions.BadRequestException;
 import epicode.u2w2d5BEdispositivi.payload.NewDeviceDTO;
 import epicode.u2w2d5BEdispositivi.payload.NewDeviceResponse;
 import epicode.u2w2d5BEdispositivi.repositories.DeviceDAO;
 import epicode.u2w2d5BEdispositivi.services.DeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,7 +30,10 @@ public class DeviceController {
 //    post: /devices
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public NewDeviceResponse saveDevice(@RequestBody NewDeviceDTO body) {
+    public NewDeviceResponse saveDevice(@RequestBody @Validated NewDeviceDTO body, BindingResult validation) {
+        if(validation.hasErrors()) {
+            throw new BadRequestException(validation.getAllErrors());
+        }
         Device device = deviceService.save(body);
         return new NewDeviceResponse(device.getId());
     }

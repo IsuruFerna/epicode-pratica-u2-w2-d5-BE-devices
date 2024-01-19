@@ -1,6 +1,7 @@
 package epicode.u2w2d5BEdispositivi.controllers;
 
 import epicode.u2w2d5BEdispositivi.entities.User;
+import epicode.u2w2d5BEdispositivi.exceptions.BadRequestException;
 import epicode.u2w2d5BEdispositivi.payload.NewUserDTO;
 import epicode.u2w2d5BEdispositivi.payload.NewUserResponse;
 import epicode.u2w2d5BEdispositivi.services.UserService;
@@ -29,10 +30,9 @@ public class UserController {
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     public NewUserResponse saveUser(@RequestBody @Validated NewUserDTO body, BindingResult validation) {
-
         if(validation.hasErrors()) {
+            throw new BadRequestException(validation.getAllErrors());
         }
-
         User user = userService.save(body);
         return new NewUserResponse(user.getId());
     }
