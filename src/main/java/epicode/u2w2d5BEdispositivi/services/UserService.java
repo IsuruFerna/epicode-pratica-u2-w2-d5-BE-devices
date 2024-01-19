@@ -1,6 +1,7 @@
 package epicode.u2w2d5BEdispositivi.services;
 
 import epicode.u2w2d5BEdispositivi.entities.User;
+import epicode.u2w2d5BEdispositivi.exceptions.BadRequestException;
 import epicode.u2w2d5BEdispositivi.exceptions.NotFoundException;
 import epicode.u2w2d5BEdispositivi.payload.NewUserDTO;
 import epicode.u2w2d5BEdispositivi.repositories.UserDAO;
@@ -19,7 +20,11 @@ public class UserService {
     }
 
     public User save(NewUserDTO user) {
+        userDAO.findByUsername(user.username()).ifPresent(found -> {
+            throw new BadRequestException("Username " + found.getUsername() + " is already exsist!");
+        });
         User u = new User();
+        u.setUsername(user.username());
         u.setLastName(user.lastName());
         u.setFirstName(user.firstName());
         u.setEmail(user.email());
@@ -37,6 +42,7 @@ public class UserService {
 
     public User findByIdAndUpdate(Long id, User body) {
         User found = this.findById(id);
+        found.setUsername(body.getUsername());
         found.setEmail(body.getEmail());
         found.setFirstName(body.getFirstName());
         found.setLastName(body.getLastName());
