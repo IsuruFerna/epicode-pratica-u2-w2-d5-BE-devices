@@ -1,6 +1,8 @@
 package epicode.u2w2d5BEdispositivi.controllers;
 
 import epicode.u2w2d5BEdispositivi.entities.User;
+import epicode.u2w2d5BEdispositivi.payload.NewUserDTO;
+import epicode.u2w2d5BEdispositivi.payload.NewUserResponse;
 import epicode.u2w2d5BEdispositivi.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,8 +26,9 @@ public class UserController {
 //    post: users/
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public User saveUser(@RequestBody User body) {
-        return userService.save(body);
+    public NewUserResponse saveUser(@RequestBody NewUserDTO body) {
+        User user = userService.save(body);
+        return new NewUserResponse(user.getId());
     }
 
 //    get: users/userId

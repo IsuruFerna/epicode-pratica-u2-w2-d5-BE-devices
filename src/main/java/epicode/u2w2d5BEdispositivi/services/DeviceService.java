@@ -52,11 +52,18 @@ public class DeviceService {
 
         System.out.println("this is user: " + body.user());
 
-//        if(body.user() != null) {
-//            User user = userService.findById(body.user());
-//            found.setUser(user);
-//        }
-
+        if(body.user() != null && found.getUser() == null) {
+            User user = userService.findById(body.user());
+            found.setUser(user);
+        } else {
+            // throw exception
+            System.out.println("Device already in use");
+        }
         return deviceDAO.save(found);
+    }
+
+    public List<Device> findByUser(Long userId) {
+        User user = userService.findById(userId);
+        return deviceDAO.findByUser(user);
     }
 }

@@ -2,6 +2,7 @@ package epicode.u2w2d5BEdispositivi.services;
 
 import epicode.u2w2d5BEdispositivi.entities.User;
 import epicode.u2w2d5BEdispositivi.exceptions.NotFoundException;
+import epicode.u2w2d5BEdispositivi.payload.NewUserDTO;
 import epicode.u2w2d5BEdispositivi.repositories.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,8 +18,12 @@ public class UserService {
         return userDAO.findAll();
     }
 
-    public User save(User user) {
-        return userDAO.save(user);
+    public User save(NewUserDTO user) {
+        User u = new User();
+        u.setLastName(user.lastName());
+        u.setFirstName(user.firstName());
+        u.setEmail(user.email());
+        return userDAO.save(u);
     }
 
     public User findById(Long id) {

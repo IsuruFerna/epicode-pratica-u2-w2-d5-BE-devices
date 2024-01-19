@@ -19,8 +19,9 @@ public class DeviceController {
 
 //    get: /devices
     @GetMapping("")
-    public List<Device> getDevices() {
-        return deviceService.getDevices();
+    public List<Device> getDevices(@RequestParam(required = false) Long userId) {
+        if(userId != null) return deviceService.findByUser(userId);
+        else return deviceService.getDevices();
     }
 
 //    post: /devices
