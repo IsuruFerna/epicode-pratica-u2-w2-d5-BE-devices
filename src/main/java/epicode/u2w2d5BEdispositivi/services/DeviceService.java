@@ -7,6 +7,9 @@ import epicode.u2w2d5BEdispositivi.payload.NewDeviceDTO;
 import epicode.u2w2d5BEdispositivi.payload.NewDeviceResponse;
 import epicode.u2w2d5BEdispositivi.repositories.DeviceDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -22,6 +25,10 @@ public class DeviceService {
 
     public List<Device> getDevices() {
         return deviceDAO.findAll();
+    }
+
+    public Page<Device> getDevicesToPage(PageRequest pageRequest) {
+        return deviceDAO.findAllToPage(pageRequest);
     }
 
     public Device save(NewDeviceDTO body) {
@@ -65,5 +72,10 @@ public class DeviceService {
     public List<Device> findByUser(Long userId) {
         User user = userService.findById(userId);
         return deviceDAO.findByUser(user);
+    }
+
+    public Page<Device> findByUserToPage(Long userId, Pageable pageable) {
+        User user = userService.findById(userId);
+        return deviceDAO.findByUserToPage(user, pageable);
     }
 }

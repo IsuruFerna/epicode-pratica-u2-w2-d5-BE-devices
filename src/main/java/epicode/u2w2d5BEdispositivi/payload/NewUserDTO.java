@@ -3,6 +3,7 @@ package epicode.u2w2d5BEdispositivi.payload;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import org.hibernate.validator.constraints.URL;
 
 public record NewUserDTO(
         @NotEmpty(message = "user name required!")
@@ -16,6 +17,8 @@ public record NewUserDTO(
         String lastName,
         @Email
         @NotEmpty(message = "email required!")
-        String email
+        String email,
+        @URL
+        String avatar
 ) {
 }

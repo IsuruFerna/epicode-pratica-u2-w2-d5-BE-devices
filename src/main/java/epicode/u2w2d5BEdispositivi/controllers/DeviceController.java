@@ -7,6 +7,9 @@ import epicode.u2w2d5BEdispositivi.payload.NewDeviceResponse;
 import epicode.u2w2d5BEdispositivi.repositories.DeviceDAO;
 import epicode.u2w2d5BEdispositivi.services.DeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -22,9 +25,12 @@ public class DeviceController {
 
 //    get: /devices
     @GetMapping("")
-    public List<Device> getDevices(@RequestParam(required = false) Long userId) {
-        if(userId != null) return deviceService.findByUser(userId);
-        else return deviceService.getDevices();
+    public Page<Device> getDevices(@RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(required = false) Long userId) {
+        if(userId != null) return deviceService.findByUserToPage(userId, PageRequest.of(page, size, Sort.by(sortBy)));
+        else return deviceService.getDevicesToPage(PageRequest.of(page, size, Sort.by(sortBy)));
     }
 
 //    post: /devices

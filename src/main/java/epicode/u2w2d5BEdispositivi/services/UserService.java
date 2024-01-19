@@ -35,6 +35,7 @@ public class UserService {
         u.setLastName(user.lastName());
         u.setFirstName(user.firstName());
         u.setEmail(user.email());
+        u.setAvatar(user.avatar());
         return userDAO.save(u);
     }
 
@@ -53,6 +54,7 @@ public class UserService {
         found.setEmail(body.getEmail());
         found.setFirstName(body.getFirstName());
         found.setLastName(body.getLastName());
+        found.setAvatar(body.getAvatar());
 
         return userDAO.save(found);
     }
