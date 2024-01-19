@@ -7,6 +7,8 @@ import epicode.u2w2d5BEdispositivi.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,7 +28,11 @@ public class UserController {
 //    post: users/
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public NewUserResponse saveUser(@RequestBody NewUserDTO body) {
+    public NewUserResponse saveUser(@RequestBody @Validated NewUserDTO body, BindingResult validation) {
+
+        if(validation.hasErrors()) {
+        }
+
         User user = userService.save(body);
         return new NewUserResponse(user.getId());
     }
@@ -50,6 +56,4 @@ public class UserController {
     public void findByIdAndDelete(@PathVariable Long userId) {
         userService.findByIdAndDelete(userId);
     }
-
-
 }
