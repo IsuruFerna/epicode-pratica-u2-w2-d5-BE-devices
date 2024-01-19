@@ -24,6 +24,7 @@ public class User {
     private String firstName;
     private String lastName;
     private String email;
+    private String avatar;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Device> deviceList;
