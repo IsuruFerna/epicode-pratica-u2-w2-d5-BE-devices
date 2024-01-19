@@ -8,6 +8,10 @@ import epicode.u2w2d5BEdispositivi.exceptions.NotFoundException;
 import epicode.u2w2d5BEdispositivi.payload.NewUserDTO;
 import epicode.u2w2d5BEdispositivi.repositories.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,8 +26,9 @@ public class UserService {
     @Autowired
     private Cloudinary cloudinaryUploader;
 
-    public List<User> getUsers() {
-        return userDAO.findAll();
+    public Page<User> getUsers(int page, int size, String sort) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+        return userDAO.findAll(pageable);
     }
 
     public User save(NewUserDTO user) {

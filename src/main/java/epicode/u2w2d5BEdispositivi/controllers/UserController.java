@@ -24,8 +24,10 @@ public class UserController {
 
 //    get: users/
     @GetMapping("")
-    public List<User> getUsers() {
-        return userService.getUsers();
+    public Page<User> getUsers(@RequestParam(defaultValue = "0") int page,
+                               @RequestParam(defaultValue = "10") int size,
+                               @RequestParam(defaultValue = "id") String sort) {
+        return userService.getUsers(page, size, sort);
     }
 
 //    post: users/
